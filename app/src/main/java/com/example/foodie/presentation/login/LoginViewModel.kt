@@ -1,4 +1,4 @@
-package com.example.foodie.login.ui
+package com.example.foodie.presentation.login
 
 import android.util.Log
 import android.util.Patterns
@@ -29,6 +29,9 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
 
     private val _auth = MutableLiveData<Boolean>()
     val auth: LiveData<Boolean> = _auth
+
+    private val _showPassword = MutableLiveData<Boolean>()
+    val showPassword : LiveData<Boolean> = _showPassword
 
     fun onLoginChanged(email: String, password: String) {
         _email.value = email

@@ -1,4 +1,4 @@
-package com.example.foodie
+package com.example.foodie.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,12 +7,9 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.foodie.login.ui.LoginScreen
-import com.example.foodie.login.ui.LoginViewModel
+import com.example.foodie.presentation.login.LoginViewModel
 import com.example.foodie.ui.theme.FoodieTheme
 import dagger.hilt.android.AndroidEntryPoint
 

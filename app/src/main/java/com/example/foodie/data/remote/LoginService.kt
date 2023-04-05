@@ -1,6 +1,5 @@
 package com.example.foodie.data.remote
 
-import com.example.foodie.core.RetrofitHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

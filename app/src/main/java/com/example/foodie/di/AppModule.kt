@@ -1,4 +1,4 @@
-package com.example.foodie.core.di
+package com.example.foodie.di
 
 import com.example.foodie.data.remote.LoginDataSource
 import dagger.Module
