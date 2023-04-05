@@ -1,5 +1,6 @@
 package com.example.foodie.login.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,7 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
-import  androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,14 +19,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.foodie.R
 import com.example.foodie.presentation.login.LoginViewModel
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel) {
+fun LoginScreen(viewModel: LoginViewModel, navigationController: NavHostController) {
     val isLoading: Boolean by viewModel.isLoading.observeAsState(initial = false)
     Box(
         Modifier
@@ -37,18 +38,17 @@ fun LoginScreen(viewModel: LoginViewModel) {
                 CircularProgressIndicator(Modifier.align(Alignment.Center))
             }
         } else {
-            Login(Modifier.align(Alignment.Center), viewModel)
+            Login(Modifier.align(Alignment.Center), viewModel, navigationController)
         }
     }
 
 }
 
 @Composable
-fun Login(modifier: Modifier, viewModel: LoginViewModel) {
+fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavHostController) {
     val email: String by viewModel.email.observeAsState(initial = "langel@dknc.cin")
     val password: String by viewModel.password.observeAsState(initial = "gdhd4354f2")
     val valid: Boolean by viewModel.valid.observeAsState(initial = false)
-    val showPassword: Boolean by viewModel.showPassword.observeAsState(initial = false)
 
     Column(modifier = modifier) {
         HeaderImage(Modifier.align(Alignment.CenterHorizontally))
@@ -61,7 +61,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
         Spacer(modifier = Modifier.padding(16.dp))
         LoginButton(valid) { viewModel.onLoginSelected() }
         Spacer(modifier = Modifier.padding(8.dp))
-        AnonymousLogin()
+        AnonymousLogin(navController)
     }
 }
 
@@ -83,14 +83,17 @@ fun LoginButton(valid: Boolean, onLoginSelected: () -> Unit) {
 }
 
 @Composable
-fun AnonymousLogin(){
-    Button(onClick = { },
+fun AnonymousLogin(nav: NavHostController) {
+    Button(
+        onClick = { nav.navigate("home") },
         Modifier
             .fillMaxWidth()
-            .height(35.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green)) {
+            .height(35.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color.Cyan)
+    ) {
         Text(text = "Modo invitado")
     }
 }
+
 @Composable
 fun ForgotPassword(modifier: Modifier) {
     Text(
