@@ -20,20 +20,27 @@ import com.example.foodie.R
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel) {
+    val isLoading: Boolean by viewModel.isLoading.observeAsState(initial = false)
     Box(
         Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Login(Modifier.align(Alignment.Center), viewModel)
+        if (isLoading) {
+            Box(Modifier.fillMaxSize()) {
+                CircularProgressIndicator(Modifier.align(Alignment.Center))
+            }
+        } else {
+            Login(Modifier.align(Alignment.Center), viewModel)
+        }
     }
 
 }
 
 @Composable
 fun Login(modifier: Modifier, viewModel: LoginViewModel) {
-    val email: String by viewModel.email.observeAsState(initial = "")
-    val password: String by viewModel.password.observeAsState(initial = "")
+    val email: String by viewModel.email.observeAsState(initial = "langel@dknc.cin")
+    val password: String by viewModel.password.observeAsState(initial = "gdhd4354f2")
     val valid: Boolean by viewModel.valid.observeAsState(initial = false)
 
     Column(modifier = modifier) {
@@ -41,18 +48,18 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
         Spacer(modifier = Modifier.padding(16.dp))
         EmailField(email) { viewModel.onLoginChanged(it, password) }
         Spacer(modifier = Modifier.padding(4.dp))
-        PasswordField(password){viewModel.onLoginChanged(email, it)}
+        PasswordField(password) { viewModel.onLoginChanged(email, it) }
         Spacer(modifier = Modifier.padding(8.dp))
         ForgotPassword(Modifier.align(Alignment.End))
         Spacer(modifier = Modifier.padding(16.dp))
-        LoginButton(valid){viewModel.onLoginSelected()}
+        LoginButton(valid) { viewModel.onLoginSelected() }
     }
 }
 
 @Composable
 fun LoginButton(valid: Boolean, onLoginSelected: () -> Unit) {
     Button(
-        onClick = {onLoginSelected},
+        onClick = { onLoginSelected() },
         Modifier
             .fillMaxWidth()
             .height(48.dp),
@@ -80,10 +87,10 @@ fun ForgotPassword(modifier: Modifier) {
 
 
 @Composable
-fun PasswordField(password: String, onTextFieldChanged:(String)->Unit) {
+fun PasswordField(password: String, onTextFieldChanged: (String) -> Unit) {
     TextField(
         value = password,
-        onValueChange = {onTextFieldChanged(it)},
+        onValueChange = { onTextFieldChanged(it) },
         placeholder = { Text(text = "Password") },
         modifier = Modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -100,10 +107,10 @@ fun PasswordField(password: String, onTextFieldChanged:(String)->Unit) {
 
 
 @Composable
-fun EmailField(email: String, onTextFieldChanged:(String)->Unit) {
+fun EmailField(email: String, onTextFieldChanged: (String) -> Unit) {
     TextField(
         value = email,
-        onValueChange = {onTextFieldChanged(it)},
+        onValueChange = { onTextFieldChanged(it) },
         modifier = Modifier.fillMaxWidth(),
         placeholder = { Text(text = "Email") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
