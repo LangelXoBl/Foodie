@@ -1,25 +1,32 @@
 package com.example.foodie.login.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import  androidx.compose.runtime.livedata.observeAsState
-import  androidx.compose.runtime.getValue
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.foodie.R
+import com.example.foodie.presentation.login.LoginViewModel
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel) {
+fun LoginScreen(viewModel: LoginViewModel, navigationController: NavHostController) {
     val isLoading: Boolean by viewModel.isLoading.observeAsState(initial = false)
     Box(
         Modifier
@@ -31,14 +38,14 @@ fun LoginScreen(viewModel: LoginViewModel) {
                 CircularProgressIndicator(Modifier.align(Alignment.Center))
             }
         } else {
-            Login(Modifier.align(Alignment.Center), viewModel)
+            Login(Modifier.align(Alignment.Center), viewModel, navigationController)
         }
     }
 
 }
 
 @Composable
-fun Login(modifier: Modifier, viewModel: LoginViewModel) {
+fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavHostController) {
     val email: String by viewModel.email.observeAsState(initial = "langel@dknc.cin")
     val password: String by viewModel.password.observeAsState(initial = "gdhd4354f2")
     val valid: Boolean by viewModel.valid.observeAsState(initial = false)
@@ -53,6 +60,8 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
         ForgotPassword(Modifier.align(Alignment.End))
         Spacer(modifier = Modifier.padding(16.dp))
         LoginButton(valid) { viewModel.onLoginSelected() }
+        Spacer(modifier = Modifier.padding(8.dp))
+        AnonymousLogin(navController)
     }
 }
 
@@ -74,6 +83,18 @@ fun LoginButton(valid: Boolean, onLoginSelected: () -> Unit) {
 }
 
 @Composable
+fun AnonymousLogin(nav: NavHostController) {
+    Button(
+        onClick = { nav.navigate("home") },
+        Modifier
+            .fillMaxWidth()
+            .height(35.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color.Cyan)
+    ) {
+        Text(text = "Modo invitado")
+    }
+}
+
+@Composable
 fun ForgotPassword(modifier: Modifier) {
     Text(
         text = "¿Olvidaste tu correo o contraseña?",
@@ -88,6 +109,7 @@ fun ForgotPassword(modifier: Modifier) {
 
 @Composable
 fun PasswordField(password: String, onTextFieldChanged: (String) -> Unit) {
+    var showPassword by remember { mutableStateOf(false) }
     TextField(
         value = password,
         onValueChange = { onTextFieldChanged(it) },
@@ -97,11 +119,20 @@ fun PasswordField(password: String, onTextFieldChanged: (String) -> Unit) {
         singleLine = true,
         maxLines = 1,
         colors = TextFieldDefaults.textFieldColors(
-            textColor = Color(0xffff2b2b),
+            textColor = Color.Black,
             backgroundColor = Color(0xffdedddd),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
-        )
+        ),
+        trailingIcon = {
+            val image = if (showPassword) Icons.Filled.VisibilityOff
+            else Icons.Filled.Visibility
+            IconButton(onClick = { showPassword = !showPassword }) {
+                Icon(imageVector = image, contentDescription = "mostrar constraseña")
+            }
+        },
+        visualTransformation = if (showPassword) VisualTransformation.None
+        else PasswordVisualTransformation()
     )
 }
 
@@ -117,7 +148,7 @@ fun EmailField(email: String, onTextFieldChanged: (String) -> Unit) {
         singleLine = true,
         maxLines = 1,
         colors = TextFieldDefaults.textFieldColors(
-            textColor = Color(0xFFFF2B2B),
+            textColor = Color.Black,
             backgroundColor = Color(0xffdedddd),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent

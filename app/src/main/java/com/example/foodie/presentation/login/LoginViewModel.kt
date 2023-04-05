@@ -1,4 +1,4 @@
-package com.example.foodie.login.ui
+package com.example.foodie.presentation.login
 
 import android.util.Log
 import android.util.Patterns
@@ -7,10 +7,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foodie.domain.LoginUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel : ViewModel() {
-    val loginUseCase = LoginUseCase()
+@HiltViewModel
+class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase) : ViewModel() {
+    //val loginUseCase = LoginUseCase()
 
     private val _email = MutableLiveData<String>()
     val email: LiveData<String> = _email
@@ -26,6 +29,9 @@ class LoginViewModel : ViewModel() {
 
     private val _auth = MutableLiveData<Boolean>()
     val auth: LiveData<Boolean> = _auth
+
+    private val _showPassword = MutableLiveData<Boolean>()
+    val showPassword : LiveData<Boolean> = _showPassword
 
     fun onLoginChanged(email: String, password: String) {
         _email.value = email
