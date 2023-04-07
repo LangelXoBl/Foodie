@@ -1,6 +1,5 @@
-package com.example.foodie.login.ui
+package com.example.foodie.ui.login
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

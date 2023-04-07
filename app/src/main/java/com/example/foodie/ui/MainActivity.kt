@@ -10,12 +10,12 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.foodie.login.ui.LoginScreen
 import com.example.foodie.ui.home.HomeScreen
 import com.example.foodie.ui.login.LoginViewModel
 import com.example.foodie.ui.theme.FoodieTheme
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.navigation.compose.rememberNavController
+import com.example.foodie.ui.login.LoginScreen
 import com.example.foodie.ui.onboarding.Onboard
 
 @AndroidEntryPoint
