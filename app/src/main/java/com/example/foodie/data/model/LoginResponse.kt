@@ -1,0 +1,8 @@
+package com.example.foodie.data.model
+
+import com.google.gson.annotations.SerializedName
+
+data class LoginResponse (
+    @SerializedName("status")
+    var Estatus: String=""
+        )
