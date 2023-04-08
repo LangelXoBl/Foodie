@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
 import com.example.foodie.domain.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -30,8 +31,6 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
     private val _auth = MutableLiveData<Boolean>()
     val auth: LiveData<Boolean> = _auth
 
-    private val _showPassword = MutableLiveData<Boolean>()
-    val showPassword : LiveData<Boolean> = _showPassword
 
     fun onLoginChanged(email: String, password: String) {
         _email.value = email
@@ -43,12 +42,19 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
         Patterns.EMAIL_ADDRESS.matcher(email).matches()
 
     private fun isValidPassword(password: String): Boolean = password.length > 6
-    fun onLoginSelected() {
+    fun onLoginSelected(nav: NavHostController) {
         viewModelScope.launch {
             _isLoading.value = true
             val result = loginUseCase(email.value!!, password.value!!)
-            if(result) Log.i("Login", "Ok")
-            else Log.i("login", "mal")
+            if(result) {
+                Log.i("Login", "Ok")
+                _auth.value = true
+                nav.navigate("home")
+            }
+            else {
+                Log.i("login", "mal")
+                _auth.value = false
+            }
             _isLoading.value= false
         }
     }

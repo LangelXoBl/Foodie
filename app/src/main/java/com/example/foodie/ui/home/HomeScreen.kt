@@ -8,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
@@ -46,11 +47,11 @@ fun HomeScreen() {
                     }
                 )
                 BottomNavigationItem(
-                        icon = { Icon(Icons.Default.Favorite, contentDescription = null) },
-                label = { Text("Favoritos") },
-                selected = currentRoute == "favorites",
+                        icon = { Icon(Icons.Default.Settings, contentDescription = null) },
+                label = { Text("Settings") },
+                selected = currentRoute == "settings",
                 onClick = {
-                    navController.navigate("favorites") {
+                    navController.navigate("settings") {
                         popUpTo(navController.graph.startDestinationId) {
                             saveState = true
                         }
@@ -64,6 +65,7 @@ fun HomeScreen() {
         NavHost(navController = navController, startDestination = "home") {
             composable("home") { /* Composable para la pantalla de inicio */ }
             composable("favorites") { /* Composable para la pantalla de favoritos */ }
+            composable("settings") { /* Composable para la pantalla de favoritos */ }
         }
     }
 }

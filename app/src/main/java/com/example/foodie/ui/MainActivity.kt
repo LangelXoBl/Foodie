@@ -7,6 +7,9 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -34,15 +37,9 @@ class MainActivity : ComponentActivity() {
                     val navigationController= rememberNavController()
                     NavHost(navController = navigationController, startDestination = "login"){
                         composable("onboard"){ Onboard()}
-                        composable("login"){ LoginScreen(viewModel = loginViewModel, navigationController)}
+                        composable("login"){ LoginScreen(viewModel = loginViewModel, navigationController = navigationController)}
                         composable("home"){ HomeScreen() }
                     }
-
-                    /*val auth: Boolean by loginViewModel.auth.observeAsState(initial = false)
-                    if(!auth)
-                    LoginScreen(viewModel = loginViewModel)
-                    else
-                        HomeScreen()*/
                 }
             }
         }

@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.foodie.R
-import com.example.foodie.ui.login.LoginViewModel
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel, navigationController: NavHostController) {
@@ -58,7 +57,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavHostC
         Spacer(modifier = Modifier.padding(8.dp))
         ForgotPassword(Modifier.align(Alignment.End))
         Spacer(modifier = Modifier.padding(16.dp))
-        LoginButton(valid) { viewModel.onLoginSelected() }
+        LoginButton(valid) { viewModel.onLoginSelected(navController) }
         Spacer(modifier = Modifier.padding(8.dp))
         AnonymousLogin(navController)
     }
