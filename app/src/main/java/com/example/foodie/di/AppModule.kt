@@ -18,7 +18,7 @@ class AppModule {
     @Provides // Prepara la clase para ser injectado
     fun provideReftrofit(): Retrofit{
         return Retrofit.Builder()
-            .baseUrl("https://run.mocky.io/")
+            .baseUrl("https://foodie-api-production.up.railway.app/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

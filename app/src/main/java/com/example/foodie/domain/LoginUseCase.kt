@@ -7,6 +7,6 @@ class LoginUseCase @Inject constructor(private val repository: LoginRepository) 
     //private val respository = LoginRepository()
 
     suspend operator fun invoke(user: String, password: String): Boolean{
-        return repository.login(user, password)=="success"
+        return repository.login(user, password)!=""
     }
 }

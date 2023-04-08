@@ -1,0 +1,3 @@
+package com.example.foodie.data.model
+
+data class LoginRequest(val username: String, val password: String)

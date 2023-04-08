@@ -36,7 +36,7 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
     fun onLoginChanged(email: String, password: String) {
         _email.value = email
         _password.value = password
-        _valid.value = isValidEmail(email) && isValidPassword(password)
+        _valid.value = isValidPassword(password)
     }
 
     private fun isValidEmail(email: String): Boolean =

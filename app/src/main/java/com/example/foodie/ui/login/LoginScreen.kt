@@ -45,8 +45,8 @@ fun LoginScreen(viewModel: LoginViewModel, navigationController: NavHostControll
 
 @Composable
 fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavHostController) {
-    val email: String by viewModel.email.observeAsState(initial = "langel@dknc.cin")
-    val password: String by viewModel.password.observeAsState(initial = "gdhd4354f2")
+    val email: String by viewModel.email.observeAsState(initial = "Jose")
+    val password: String by viewModel.password.observeAsState(initial = "password")
     val valid: Boolean by viewModel.valid.observeAsState(initial = false)
 
     Column(modifier = modifier) {
