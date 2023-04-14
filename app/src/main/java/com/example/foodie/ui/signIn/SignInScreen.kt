@@ -1,4 +1,4 @@
-package com.example.foodie.ui.login
+package com.example.foodie.ui.signIn
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -19,15 +19,16 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.foodie.R
-import com.example.foodie.navigation.ItemsNav
-import com.example.foodie.ui.components.TextButton
 
+//@PreviewParameter()
 @Composable
-fun LoginScreen(viewModel: LoginViewModel) {
+fun SignInScreen(viewModel: SignInViewModel, navigationController: NavHostController) {
     val isLoading: Boolean by viewModel.isLoading.observeAsState(initial = false)
     Box(
         Modifier
@@ -39,46 +40,31 @@ fun LoginScreen(viewModel: LoginViewModel) {
                 CircularProgressIndicator(Modifier.align(Alignment.Center))
             }
         } else {
-            Login(Modifier.align(Alignment.Center), viewModel)
+            Login(Modifier.align(Alignment.Center), viewModel, navigationController)
         }
     }
 
 }
 
 @Composable
-fun Login(modifier: Modifier, viewModel: LoginViewModel) {
-    val username: String by viewModel.username.observeAsState(initial = "Jose")
+fun Login(modifier: Modifier, viewModel: SignInViewModel, navController: NavHostController) {
+    val email: String by viewModel.email.observeAsState(initial = "Jose")
     val password: String by viewModel.password.observeAsState(initial = "password")
     val valid: Boolean by viewModel.valid.observeAsState(initial = false)
 
     Column(modifier = modifier) {
+        Text(text = "Sign In")
         HeaderImage(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.padding(16.dp))
-        UsernameField(username = username) { viewModel.onLoginChanged(it, password) }
+        EmailField(email) { viewModel.onLoginChanged(it, password) }
         Spacer(modifier = Modifier.padding(4.dp))
-        PasswordField(password) { viewModel.onLoginChanged(username, it) }
+        PasswordField(password) { viewModel.onLoginChanged(email, it) }
         Spacer(modifier = Modifier.padding(8.dp))
-        ForgotPassword(Modifier.align(Alignment.End))
+        //ForgotPassword(Modifier.align(Alignment.End))
         Spacer(modifier = Modifier.padding(16.dp))
-        LoginButton(valid) { viewModel.onLoginSelected() }
+        LoginButton(valid) { viewModel.onLoginSelected(navController) }
         Spacer(modifier = Modifier.padding(8.dp))
-        Options{viewModel.anonymous()}
-    }
-}
-
-@Composable
-fun Options(anonymous:() -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ) {
-
-        TextButton(text = "Registrarse") {
-
-        }
-        TextButton(text = "Invitado") { anonymous() }
+        AnonymousLogin(navController)
     }
 }
 
@@ -99,17 +85,16 @@ fun LoginButton(valid: Boolean, onLoginSelected: () -> Unit) {
     }
 }
 
-
 @Composable
-fun ForgotPassword(modifier: Modifier) {
-    Text(
-        text = "¿Olvidaste tu correo o contraseña?",
-        modifier = modifier.clickable { },
-        fontSize = 12.sp,
-        fontWeight = FontWeight.Bold,
-        color = Color(0xfff89600)
-
-    )
+fun AnonymousLogin(nav: NavHostController) {
+    Button(
+        onClick = { nav.navigate("home") },
+        Modifier
+            .fillMaxWidth()
+            .height(35.dp), colors = ButtonDefaults.buttonColors(backgroundColor = Color.Cyan)
+    ) {
+        Text(text = "Modo invitado")
+    }
 }
 
 
@@ -144,12 +129,12 @@ fun PasswordField(password: String, onTextFieldChanged: (String) -> Unit) {
 
 
 @Composable
-fun UsernameField(username: String, onTextFieldChanged: (String) -> Unit) {
+fun EmailField(email: String, onTextFieldChanged: (String) -> Unit) {
     TextField(
-        value = username,
+        value = email,
         onValueChange = { onTextFieldChanged(it) },
         modifier = Modifier.fillMaxWidth(),
-        placeholder = { Text(text = "Username") },
+        placeholder = { Text(text = "Email") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,

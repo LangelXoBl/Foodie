@@ -1,4 +1,4 @@
-package com.example.foodie.ui.login
+package com.example.foodie.ui.signIn
 
 import android.util.Log
 import android.util.Patterns
@@ -8,16 +8,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.example.foodie.domain.LoginUseCase
-import com.example.foodie.navigation.ItemsNav
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase) : ViewModel() {
+class SignInViewModel @Inject constructor(private val loginUseCase: LoginUseCase) : ViewModel() {
+    //val loginUseCase = LoginUseCase()
 
-    private val _username = MutableLiveData<String>()
-    val username: LiveData<String> = _username
+    private val _email = MutableLiveData<String>()
+    val email: LiveData<String> = _email
 
     private val _password = MutableLiveData<String>()
     val password: LiveData<String> = _password
@@ -33,30 +33,29 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
 
 
     fun onLoginChanged(email: String, password: String) {
-        _username.value = email
+        _email.value = email
         _password.value = password
         _valid.value = isValidPassword(password)
     }
 
-    private fun isValidPassword(password: String): Boolean = password.length > 6
+    private fun isValidEmail(email: String): Boolean =
+        Patterns.EMAIL_ADDRESS.matcher(email).matches()
 
-    fun onLoginSelected() {
+    private fun isValidPassword(password: String): Boolean = password.length > 6
+    fun onLoginSelected(nav: NavHostController) {
         viewModelScope.launch {
             _isLoading.value = true
-            val result = loginUseCase(username.value!!, password.value!!)
-            if (result) {
+            val result = loginUseCase(email.value!!, password.value!!)
+            if(result) {
                 Log.i("Login", "Ok")
                 _auth.value = true
-            } else {
+                nav.navigate("home")
+            }
+            else {
                 Log.i("login", "mal")
                 _auth.value = false
             }
-            _isLoading.value = false
+            _isLoading.value= false
         }
-    }
-
-    fun anonymous() {
-        Log.i("Invited", "logIn")
-        _auth.value = true
     }
 }

@@ -11,7 +11,6 @@ class LoginUseCase @Inject constructor(
     @ApplicationContext private val context: Context,
     private val repository: LoginRepository
 ) {
-    //private val respository = LoginRepository()
     private val preferences = PreferenceHelper.defaultPrefs(context)
 
     suspend operator fun invoke(user: String, password: String): Boolean {

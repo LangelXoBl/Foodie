@@ -1,44 +1,49 @@
 package com.example.foodie.ui.home
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.foodie.navigation.ItemsNav
+import com.example.foodie.ui.onboarding.Onboard
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HomeScreen() {
     val navController = rememberNavController()
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = navController.currentBackStackEntryAsState().value?.destination?.route
+                            ?: ""
+                    )
+                }
+            )
+        },
         bottomBar = {
             BottomNavigation {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
                 BottomNavigationItem(
-                    icon = { Icon(Icons.Default.Home, contentDescription = null) },
-                    label = { Text(text = "Inicio") },
-                    selected = currentRoute == "home",
+                    icon = { Icon(ItemsNav.HomeRoute.icon, contentDescription = null) },
+                    label = { Text(text = ItemsNav.HomeRoute.title) },
+                    selected = currentRoute == ItemsNav.HomeRoute.route,
                     onClick = {
                         navController.popBackStack(navController.graph.startDestinationId, false)
                     }
                 )
                 BottomNavigationItem(
-                    icon = { Icon(Icons.Default.Favorite, contentDescription = null) },
-                    label = { Text("Favoritos") },
-                    selected = currentRoute == "favorites",
+                    icon = { Icon(ItemsNav.FavoriteRoute.icon, contentDescription = null) },
+                    label = { Text(ItemsNav.FavoriteRoute.title) },
+                    selected = currentRoute == ItemsNav.FavoriteRoute.route,
                     onClick = {
-                        navController.navigate("favorites") {
+                        navController.navigate(ItemsNav.FavoriteRoute.route) {
                             popUpTo(navController.graph.startDestinationId) {
                                 saveState = true
                             }
@@ -47,25 +52,25 @@ fun HomeScreen() {
                     }
                 )
                 BottomNavigationItem(
-                        icon = { Icon(Icons.Default.Settings, contentDescription = null) },
-                label = { Text("Settings") },
-                selected = currentRoute == "settings",
-                onClick = {
-                    navController.navigate("settings") {
-                        popUpTo(navController.graph.startDestinationId) {
-                            saveState = true
+                    icon = { Icon(ItemsNav.SettingsRoute.icon, contentDescription = null) },
+                    label = { Text(ItemsNav.SettingsRoute.title) },
+                    selected = currentRoute == ItemsNav.SettingsRoute.route,
+                    onClick = {
+                        navController.navigate(ItemsNav.SettingsRoute.route) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
                         }
-                        launchSingleTop = true
                     }
-                }
                 )
             }
         }
     ) {
-        NavHost(navController = navController, startDestination = "home") {
-            composable("home") { /* Composable para la pantalla de inicio */ }
-            composable("favorites") { /* Composable para la pantalla de favoritos */ }
-            composable("settings") { /* Composable para la pantalla de favoritos */ }
+        NavHost(navController = navController, startDestination = ItemsNav.HomeRoute.route) {
+            composable(ItemsNav.HomeRoute.route) { Text(text = "home") }
+            composable(ItemsNav.SettingsRoute.route) { Text(text = "settings") }
+            composable(ItemsNav.FavoriteRoute.route) { Text(text = "fav") }
         }
     }
 }

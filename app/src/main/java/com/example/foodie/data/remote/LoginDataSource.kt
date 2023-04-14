@@ -10,5 +10,5 @@ import retrofit2.http.Query
 
 interface LoginDataSource {
     @POST("user/login/")
-    suspend fun login(@Body request:LoginRequest): Response<LoginResponse>
+    suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
 }
