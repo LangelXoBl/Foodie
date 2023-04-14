@@ -20,11 +20,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import androidx.navigation.compose.rememberNavController
 import com.example.foodie.ui.login.LoginScreen
 import com.example.foodie.ui.onboarding.Onboard
+import com.example.foodie.ui.recipe.RecipeViewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val loginViewModel: LoginViewModel by viewModels()
+    private val recipeViewModel: RecipeViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -38,7 +40,7 @@ class MainActivity : ComponentActivity() {
                     NavHost(navController = navigationController, startDestination = "login"){
                         composable("onboard"){ Onboard()}
                         composable("login"){ LoginScreen(viewModel = loginViewModel, navigationController = navigationController)}
-                        composable("home"){ HomeScreen() }
+                        composable("home"){ HomeScreen(recipeViewModel = recipeViewModel) }
                     }
                 }
             }

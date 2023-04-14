@@ -1,6 +1,10 @@
 package com.example.foodie.di
 
 import com.example.foodie.data.remote.LoginDataSource
+import com.example.foodie.data.remote.recipe.RecipeDataSource
+import com.example.foodie.data.repository.RecipeRepository
+import com.example.foodie.domain.FinderUseCase
+import com.example.foodie.ui.recipe.RecipeViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,8 +21,9 @@ class AppModule {
     @Singleton // crea una unica instancia de la clase
     @Provides // Prepara la clase para ser injectado
     fun provideReftrofit(): Retrofit{
+        // https://foodie-api-production.up.railway.app/ <- URL de la API produccion
         return Retrofit.Builder()
-            .baseUrl("https://foodie-api-production.up.railway.app/")
+            .baseUrl("http://10.0.2.2:8000/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -28,4 +33,17 @@ class AppModule {
     fun provideLoginDateSource(retrofit: Retrofit): LoginDataSource{
         return retrofit.create(LoginDataSource::class.java)
     }
+
+    @Singleton
+    @Provides
+    fun provideRecipeDataSource(retrofit: Retrofit): RecipeDataSource {
+        return retrofit.create(RecipeDataSource::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideFinderUseCase(repository: RecipeRepository): FinderUseCase {
+        return FinderUseCase(repository)
+    }
+
 }
