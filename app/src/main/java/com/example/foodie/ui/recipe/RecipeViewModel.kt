@@ -42,6 +42,13 @@ class RecipeViewModel @Inject constructor(private val finderUseCase: FinderUseCa
     }
 
     fun retryGetIngredientUrl(ingredient: RecipeResponse) {
+        _ingredientList.value = _ingredientList.value.map { currentIngredient ->
+            if (currentIngredient.name == ingredient.name) {
+                currentIngredient.copy(status = RecipeResponse.Status.LOADING)
+            } else {
+                currentIngredient
+            }
+        }
         viewModelScope.launch {
             try {
                 val link = finderUseCase("Token 77ee454e092260498a59f6e279a42cf6bcb9571d", ingredient.name)

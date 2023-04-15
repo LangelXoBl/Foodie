@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class RecipeService @Inject constructor(private val recipeDataSource: RecipeDataSource) {
-    //private val retrofit = RetrofitHelper.getRetrofit()
+
 
     suspend fun getRecipeIngredient(token: String, ingredient: String): String {
         return withContext(Dispatchers.IO) {

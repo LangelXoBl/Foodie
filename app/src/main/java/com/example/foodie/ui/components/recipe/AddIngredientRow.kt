@@ -9,13 +9,16 @@ import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
+import com.example.foodie.ui.recipe.RecipeViewModel
 
 @Composable
-fun AddIngredientRow(input: MutableState<TextFieldValue>, onAddClick: () -> Unit) {
+fun AddIngredientRow (recipeViewModel: RecipeViewModel) {
+    val input = remember { mutableStateOf(TextFieldValue()) }
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
         TextField(
             value = input.value,
@@ -24,7 +27,7 @@ fun AddIngredientRow(input: MutableState<TextFieldValue>, onAddClick: () -> Unit
             modifier = Modifier.weight(1f)
         )
         IconButton(onClick = {
-            onAddClick()
+            recipeViewModel.addIngredient(input.value.text)
             input.value = TextFieldValue()
         }) {
             Icon(Icons.Default.Add, contentDescription = "Añadir ingrediente")

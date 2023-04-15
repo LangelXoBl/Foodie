@@ -1,33 +1,38 @@
 package com.example.foodie.ui.components.recipe
 
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.example.foodie.data.model.recipe.RecipeResponse
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.clickable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import com.example.foodie.data.model.recipe.RecipeResponse
+import com.example.foodie.ui.recipe.RecipeViewModel
 
 
 @Composable
 fun IngredientRow(
     ingredient: RecipeResponse,
-    onRetryClick: () -> Unit,
-    onRemoveClick: () -> Unit
+    recipeViewModel: RecipeViewModel
 ) {
     val context = LocalContext.current
+    fun onRetryClick() {
+        recipeViewModel.retryGetIngredientUrl(ingredient)
+    }
+    fun onRemoveClick() {
+        recipeViewModel.removeIngredient(ingredient)
+    }
     Row(
         modifier = Modifier
             .fillMaxWidth()

@@ -1,6 +1,7 @@
 package com.example.foodie.data.repository
 
 import com.example.foodie.data.model.recipe.RecipeResponse
+import com.example.foodie.data.remote.recipe.RecipeDataSource
 import com.example.foodie.data.remote.recipe.RecipeService
 import javax.inject.Inject
 

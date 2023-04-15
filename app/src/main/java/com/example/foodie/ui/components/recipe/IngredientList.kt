@@ -2,28 +2,17 @@ package com.example.foodie.ui.components.recipe
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Divider
-import androidx.compose.runtime.*
-import com.example.foodie.data.model.recipe.RecipeResponse
+import androidx.compose.runtime.Composable
 import com.example.foodie.ui.recipe.RecipeViewModel
 
 @Composable
-fun IngredientList(
-    ingredients: List<RecipeResponse>,
-    onRemoveClick: (RecipeResponse) -> Unit,
-    onRetryClick: (RecipeResponse) -> Unit,
-    recipeViewModel: RecipeViewModel
-) {
-    var updatedIngredients by remember { mutableStateOf(ingredients) }
-
-    LaunchedEffect(key1 = ingredients) {
-        updatedIngredients = ingredients
-    }
+fun IngredientList(recipeViewModel: RecipeViewModel) {
+    val ingredients = recipeViewModel.ingredientList
     Column {
-        updatedIngredients.forEach { ingredient ->
+        ingredients.forEach { ingredient ->
             IngredientRow(
                 ingredient,
-                onRetryClick = { onRetryClick(ingredient) },
-                onRemoveClick = { onRemoveClick(ingredient) }
+                recipeViewModel
             )
             Divider()
         }

@@ -1,14 +1,13 @@
 package com.example.foodie.ui.login
 
 import android.util.Log
-import android.util.Patterns
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavHostController
 import com.example.foodie.domain.LoginUseCase
-import com.example.foodie.navigation.ItemsNav
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,6 +30,10 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
     private val _auth = MutableLiveData<Boolean>()
     val auth: LiveData<Boolean> = _auth
 
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String> = _errorMessage
+
+
 
     fun onLoginChanged(email: String, password: String) {
         _username.value = email
@@ -42,16 +45,24 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
 
     fun onLoginSelected() {
         viewModelScope.launch {
-            _isLoading.value = true
-            val result = loginUseCase(username.value!!, password.value!!)
-            if (result) {
-                Log.i("Login", "Ok")
-                _auth.value = true
-            } else {
+            try {
+                errorMessage.value?.let { _errorMessage.value = "" }
+                _isLoading.value = true
+                val result = loginUseCase(username.value!!, password.value!!)
+                if (result) {
+                    Log.i("Login", "Ok")
+                    _auth.value = true
+                } else {
+                    Log.i("login", "mal")
+                    _auth.value = false
+                }
+                _isLoading.value = false
+            } catch (e: Exception) {
+                _errorMessage.value = "Error de conexión"
                 Log.i("login", "mal")
                 _auth.value = false
+                _isLoading.value = false
             }
-            _isLoading.value = false
         }
     }
 

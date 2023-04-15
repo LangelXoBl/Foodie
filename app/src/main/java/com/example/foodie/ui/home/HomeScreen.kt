@@ -10,6 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -17,17 +18,19 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.foodie.navigation.ItemsNav
-import com.example.foodie.ui.login.LoginViewModel
 import com.example.foodie.ui.recipe.RecipeScreen
 import com.example.foodie.ui.recipe.RecipeViewModel
+import com.example.foodie.utils.PreferenceHelper
+import com.example.foodie.utils.PreferenceHelper.get
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun HomeScreen(recipeViewModel: RecipeViewModel) {
+fun HomeScreen() {
+    val token = PreferenceHelper.defaultPrefs(LocalContext.current)["token", ""]
     val navController = rememberNavController()
     val scrollState = rememberScrollState()
     val showAddItemButton = remember { mutableStateOf(true) }
-    val viewmodel: RecipeViewModel = viewModel()
+    val recipeViewModel: RecipeViewModel = viewModel()
 
     LaunchedEffect(navController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -91,14 +94,11 @@ fun HomeScreen(recipeViewModel: RecipeViewModel) {
             composable(ItemsNav.SettingsRoute.route) { Text(text = "settings") }
             composable(ItemsNav.FavoriteRoute.route) { Text(text = "fav") }
             composable("recipe") {
-                RecipeScreen(
-                    viewModel = viewmodel,
-                    navigationController = navController
-                )
+                RecipeScreen(recipeViewModel = recipeViewModel)
             }
         }
     }
-    if (showAddItemButton.value && scrollState.value <= 0) {
+    if ((showAddItemButton.value && scrollState.value <= 0) || token.isNotBlank())  {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -115,3 +115,4 @@ fun HomeScreen(recipeViewModel: RecipeViewModel) {
         }
     }
 }
+

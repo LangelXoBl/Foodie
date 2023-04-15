@@ -1,5 +1,6 @@
 package com.example.foodie.ui.login
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -18,32 +19,47 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.example.foodie.R
-import com.example.foodie.navigation.ItemsNav
 import com.example.foodie.ui.components.TextButton
 
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun LoginScreen(viewModel: LoginViewModel) {
     val isLoading: Boolean by viewModel.isLoading.observeAsState(initial = false)
-    Box(
-        Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        if (isLoading) {
-            Box(Modifier.fillMaxSize()) {
-                CircularProgressIndicator(Modifier.align(Alignment.Center))
+    val errorMessage by viewModel.errorMessage.observeAsState("")
+
+    val scaffoldState = rememberScaffoldState(
+        snackbarHostState = SnackbarHostState()
+    )
+
+    Scaffold(scaffoldState = scaffoldState) {
+        Box(
+            Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            if (isLoading) {
+                Box(Modifier.fillMaxSize()) {
+                    CircularProgressIndicator(Modifier.align(Alignment.Center))
+                }
+            } else {
+                Login(Modifier.align(Alignment.Center), viewModel)
             }
-        } else {
-            Login(Modifier.align(Alignment.Center), viewModel)
+        }
+
+        LaunchedEffect(errorMessage) {
+            if (errorMessage.isNotEmpty()) {
+                scaffoldState.snackbarHostState.showSnackbar(errorMessage)
+            }
         }
     }
-
 }
+
+
+
 
 @Composable
 fun Login(modifier: Modifier, viewModel: LoginViewModel) {
@@ -62,12 +78,12 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
         Spacer(modifier = Modifier.padding(16.dp))
         LoginButton(valid) { viewModel.onLoginSelected() }
         Spacer(modifier = Modifier.padding(8.dp))
-        Options{viewModel.anonymous()}
+        Options { viewModel.anonymous() }
     }
 }
 
 @Composable
-fun Options(anonymous:() -> Unit) {
+fun Options(anonymous: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

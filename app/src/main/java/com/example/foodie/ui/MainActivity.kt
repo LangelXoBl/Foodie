@@ -26,7 +26,6 @@ class MainActivity : ComponentActivity() {
 
     private val loginViewModel: LoginViewModel by viewModels()
     private val onboardViewModel: OnboardViewModel by viewModels()
-    private val recipeViewModel: RecipeViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -40,7 +39,7 @@ class MainActivity : ComponentActivity() {
                     val newUser: Boolean by onboardViewModel.newUser.observeAsState(initial = true)
                     val preferences = PreferenceHelper.defaultPrefs(this)
                     if (auth || preferences["token", ""].isNotBlank()) {
-                        HomeScreen(recipeViewModel = recipeViewModel)
+                        HomeScreen()
                     } else
                         if (newUser && preferences["newUser", true])
                             Onboard(onboardViewModel)
