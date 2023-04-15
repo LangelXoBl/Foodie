@@ -26,7 +26,8 @@ import com.example.foodie.utils.PreferenceHelper.get
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HomeScreen() {
-    val token = PreferenceHelper.defaultPrefs(LocalContext.current)["token", ""]
+    val preferences = PreferenceHelper.defaultPrefs(LocalContext.current)
+    val token = preferences["token", ""]
     val navController = rememberNavController()
     val scrollState = rememberScrollState()
     val showAddItemButton = remember { mutableStateOf(true) }
@@ -98,7 +99,8 @@ fun HomeScreen() {
             }
         }
     }
-    if ((showAddItemButton.value && scrollState.value <= 0) || token.isNotBlank())  {
+    if ((showAddItemButton.value && scrollState.value <= 0) && token.isNotBlank())  {
+        print(token)
         Box(
             modifier = Modifier
                 .fillMaxSize()
