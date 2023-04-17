@@ -17,13 +17,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.foodie.data.model.ingredient.IngredientResponse
 import com.example.foodie.data.model.recipe.RecipeResponse
 import com.example.foodie.ui.recipe.RecipeViewModel
 
 
 @Composable
 fun IngredientRow(
-    ingredient: RecipeResponse,
+    ingredient: IngredientResponse,
     recipeViewModel: RecipeViewModel
 ) {
     val context = LocalContext.current
@@ -45,10 +46,10 @@ fun IngredientRow(
         )
 
         when (ingredient.status) {
-            RecipeResponse.Status.LOADING -> {
+            IngredientResponse.Status.LOADING -> {
                 Text(text = "Cargando...")
             }
-            RecipeResponse.Status.SUCCESS -> {
+            IngredientResponse.Status.SUCCESS -> {
                 Icon(
                     Icons.Filled.Visibility,
                     contentDescription = "Ver ingrediente",
@@ -59,7 +60,7 @@ fun IngredientRow(
                 )
 
             }
-            RecipeResponse.Status.ERROR -> {
+            IngredientResponse.Status.ERROR -> {
                 Icon(
                     Icons.Filled.Refresh,
                     contentDescription = "Reintentar",

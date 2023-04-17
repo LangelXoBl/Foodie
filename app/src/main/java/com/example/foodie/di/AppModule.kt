@@ -5,6 +5,9 @@ import com.example.foodie.data.remote.recipe.RecipeDataSource
 import com.example.foodie.data.remote.recipe.RecipeService
 import com.example.foodie.data.repository.RecipeRepository
 import com.example.foodie.domain.FinderUseCase
+import com.example.foodie.domain.recipe.RecipeUserCase
+import com.example.foodie.ui.home.ListRecipesViewModel
+import com.example.foodie.ui.recipe.RecipeViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +26,7 @@ class AppModule {
     fun provideReftrofit(): Retrofit{
         // https://foodie-api-production.up.railway.app/ <- URL de la API produccion
         return Retrofit.Builder()
-            .baseUrl("http://192.168.100.48:8000/")
+            .baseUrl("https://foodie-api-production.up.railway.app/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -51,4 +54,15 @@ class AppModule {
         return RecipeRepository(recipeService)
     }
 
+    @Singleton
+    @Provides
+    fun provideRecipeUseCase(recipeRepository: RecipeRepository): RecipeUserCase{
+        return RecipeUserCase(recipeRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideListRecipesViewModel(recipeUserCase: RecipeUserCase): ListRecipesViewModel{
+        return ListRecipesViewModel(recipeUserCase)
+    }
 }

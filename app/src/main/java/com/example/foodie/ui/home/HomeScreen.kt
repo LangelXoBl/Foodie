@@ -32,6 +32,7 @@ fun HomeScreen() {
     val scrollState = rememberScrollState()
     val showAddItemButton = remember { mutableStateOf(true) }
     val recipeViewModel: RecipeViewModel = viewModel()
+    val listRecipesViewModel: ListRecipesViewModel= viewModel()
 
     LaunchedEffect(navController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -91,7 +92,7 @@ fun HomeScreen() {
         }
     ) {
         NavHost(navController = navController, startDestination = ItemsNav.HomeRoute.route) {
-            composable(ItemsNav.HomeRoute.route) { ListRecipes() }
+            composable(ItemsNav.HomeRoute.route) { ListRecipes(listRecipesViewModel) }
             composable(ItemsNav.SettingsRoute.route) { Text(text = "settings") }
             composable(ItemsNav.FavoriteRoute.route) { Text(text = "fav") }
             composable("recipe") {

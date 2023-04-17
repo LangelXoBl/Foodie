@@ -22,4 +22,17 @@ class RecipeService @Inject constructor(private val recipeDataSource: RecipeData
             }
         }
     }
+
+    suspend fun getRecipes(): List<RecipeResponse>? {
+        return withContext(Dispatchers.IO) {
+            val response = recipeDataSource.recipes()
+            Log.i("Recipes", "${response.body()?.size}")
+            if (response.isSuccessful) {
+                response.body()
+            } else {
+                Log.i("Recipes", "too mal")
+                throw Exception("Error en la solicitud: ${response.errorBody()?.string()}")
+            }
+        }
+    }
 }

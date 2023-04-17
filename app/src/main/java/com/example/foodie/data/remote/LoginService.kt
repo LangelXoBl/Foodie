@@ -2,6 +2,8 @@ package com.example.foodie.data.remote
 
 import android.util.Log
 import com.example.foodie.data.model.LoginRequest
+import com.example.foodie.data.model.recipe.RecipeResponse
+import com.example.foodie.data.remote.recipe.RecipeDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
