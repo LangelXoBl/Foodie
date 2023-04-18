@@ -13,11 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.foodie.navigation.ItemsNav
+import com.example.foodie.ui.detail.DetailRecipe
+import com.example.foodie.ui.detail.DetailViewModel
 import com.example.foodie.ui.recipe.RecipeScreen
 import com.example.foodie.ui.recipe.RecipeViewModel
 import com.example.foodie.utils.PreferenceHelper
@@ -33,6 +37,7 @@ fun HomeScreen() {
     val showAddItemButton = remember { mutableStateOf(true) }
     val recipeViewModel: RecipeViewModel = viewModel()
     val listRecipesViewModel: ListRecipesViewModel= viewModel()
+    val detailViewModel: DetailViewModel = viewModel()
 
     LaunchedEffect(navController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -92,9 +97,11 @@ fun HomeScreen() {
         }
     ) {
         NavHost(navController = navController, startDestination = ItemsNav.HomeRoute.route) {
-            composable(ItemsNav.HomeRoute.route) { ListRecipes(listRecipesViewModel) }
+            composable(ItemsNav.HomeRoute.route) { ListRecipes(listRecipesViewModel, navController) }
             composable(ItemsNav.SettingsRoute.route) { Text(text = "settings") }
             composable(ItemsNav.FavoriteRoute.route) { Text(text = "fav") }
+            composable(route=ItemsNav.RecipeDetail.route+"/{id}", arguments = listOf(navArgument(name = "id"){type=
+                NavType.IntType}) ){ DetailRecipe(detailViewModel = detailViewModel, id = it.arguments?.getInt("id"))}
             composable("recipe") {
                 RecipeScreen(recipeViewModel = recipeViewModel)
             }

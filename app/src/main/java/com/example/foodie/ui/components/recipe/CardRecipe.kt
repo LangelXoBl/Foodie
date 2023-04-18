@@ -19,17 +19,19 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.foodie.data.model.recipe.RecipeResponse
+import com.example.foodie.navigation.ItemsNav
 
 //@Preview()
 @Composable
-fun CardRecipe(recipe: RecipeResponse) {
+fun CardRecipe(recipe: RecipeResponse, navController: NavController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
-            .clickable {  },
+            .clickable { navController.navigate(ItemsNav.RecipeDetail.route+"/${recipe.id}") },
         elevation = 10.dp
     ) {
         Row(Modifier.fillMaxWidth()) {

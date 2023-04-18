@@ -14,4 +14,7 @@ interface RecipeDataSource {
 
     @GET("recipe/")
     suspend fun recipes():Response<List<RecipeResponse>>
+
+    @GET("recipe/{id}")
+    suspend fun recipeDetail(@Path("id") id: Number): Response<RecipeResponse>
 }

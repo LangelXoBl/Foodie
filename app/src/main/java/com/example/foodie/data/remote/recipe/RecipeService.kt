@@ -35,4 +35,16 @@ class RecipeService @Inject constructor(private val recipeDataSource: RecipeData
             }
         }
     }
+
+    suspend fun getDetailRecipe(id: Number):RecipeResponse?{
+        return withContext(Dispatchers.IO){
+            val response = recipeDataSource.recipeDetail(id)
+            if(response.isSuccessful) {
+                response.body()
+            }
+            else{
+                throw Exception("Error al obtener detalles: ${response.errorBody()?.string()}")
+            }
+        }
+    }
 }

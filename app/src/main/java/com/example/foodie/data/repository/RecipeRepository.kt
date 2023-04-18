@@ -16,5 +16,9 @@ class RecipeRepository @Inject constructor(private val api: RecipeService) {
     suspend fun getRecipes(): List<RecipeResponse>? {
         return api.getRecipes()
     }
+
+    suspend fun getDetailRecipes(id: Number):RecipeResponse?{
+        return api.getDetailRecipe(id)
+    }
 }
 

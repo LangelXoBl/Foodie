@@ -8,4 +8,8 @@ class RecipeUserCase @Inject constructor(private val recipeRepository: RecipeRep
     suspend operator fun invoke(): List<RecipeResponse> ?{
         return recipeRepository.getRecipes()
     }
+
+    suspend fun getDetailRecipe(id: Number):RecipeResponse? {
+        return recipeRepository.getDetailRecipes(id)
+    }
 }

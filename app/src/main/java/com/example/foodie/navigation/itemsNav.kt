@@ -15,5 +15,5 @@ sealed class ItemsNav(
     object HomeRoute : ItemsNav(Icons.Default.Home, "Home", "home")
     object SettingsRoute : ItemsNav(Icons.Default.Settings, "Settings", "settings")
     object FavoriteRoute : ItemsNav(Icons.Default.Favorite, "Favorites", "favorites")
-    object Screen3: ItemsNav(Icons.Default.Adb, "Recipe", "recipe")
+    object RecipeDetail: ItemsNav(Icons.Default.Adb, "RecipeDetail", "detail")
 }
