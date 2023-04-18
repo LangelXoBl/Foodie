@@ -1,5 +1,6 @@
 package com.example.foodie.data.repository
 
+import com.example.foodie.data.model.categories.CategoriesResponse
 import com.example.foodie.data.model.ingredient.IngredientResponse
 import com.example.foodie.data.model.recipe.RecipeResponse
 import com.example.foodie.data.remote.recipe.RecipeDataSource
@@ -19,6 +20,22 @@ class RecipeRepository @Inject constructor(private val api: RecipeService) {
 
     suspend fun getDetailRecipes(id: Number):RecipeResponse?{
         return api.getDetailRecipe(id)
+    }
+
+    suspend fun getCategories(): List<CategoriesResponse>? {
+        return api.getCategories()
+    }
+
+    suspend fun createRecipe(
+        title: String,
+        description: String,
+        image: String,
+        preparation_time: String,
+        ingredients: List<IngredientResponse>,
+        instructions: List<String>,
+        categories: List<CategoriesResponse>
+    ) {
+        return api.createRecipe(title, description, image,preparation_time, ingredients, instructions, categories)
     }
 }
 

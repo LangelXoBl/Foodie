@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.foodie.data.model.ingredient.IngredientResponse
@@ -42,21 +43,24 @@ fun IngredientRow(
     ) {
         Text(
             text = ingredient.name,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            color = Color.White
         )
 
         when (ingredient.status) {
             IngredientResponse.Status.LOADING -> {
-                Text(text = "Cargando...")
+                Text(text = "Cargando...", color = Color.White)
             }
             IngredientResponse.Status.SUCCESS -> {
                 Icon(
                     Icons.Filled.Visibility,
                     contentDescription = "Ver ingrediente",
-                    modifier = Modifier.clickable {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(ingredient.url))
-                        context.startActivity(intent)
-                    }
+                    modifier = Modifier
+                        .clickable {
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(ingredient.url))
+                            context.startActivity(intent)
+                        },
+                    tint = Color.White
                 )
 
             }
@@ -66,17 +70,19 @@ fun IngredientRow(
                     contentDescription = "Reintentar",
                     modifier = Modifier.clickable {
                         onRetryClick()
-                    }
+                    },
+                    tint = Color.White
                 )
 
             }
             else -> {}
         }
-            Icon(Icons.Filled.Clear,
-                contentDescription = "Eliminar",
-                modifier = Modifier
-                    .clickable { onRemoveClick() }
-                    .padding(start = 16.dp)
-            )
+        Icon(Icons.Filled.Clear,
+            contentDescription = "Eliminar",
+            modifier = Modifier
+                .clickable { onRemoveClick() }
+                .padding(start = 16.dp),
+            tint = Color.White
+        )
     }
 }

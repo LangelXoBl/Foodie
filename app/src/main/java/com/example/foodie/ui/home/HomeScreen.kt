@@ -2,6 +2,7 @@ package com.example.foodie.ui.home
 
 import AddItemButton
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,6 +11,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -103,14 +105,7 @@ fun HomeScreen() {
             composable(route=ItemsNav.RecipeDetail.route+"/{id}", arguments = listOf(navArgument(name = "id"){type=
                 NavType.IntType}) ){ DetailRecipe(detailViewModel = detailViewModel, id = it.arguments?.getInt("id"))}
             composable("recipe") {
-                RecipeScreen(recipeViewModel = recipeViewModel) {
-                    navController.navigate("recipe_form_screen") {
-                        popUpTo(navController.graph.startDestinationId) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                    }
-                }
+                RecipeScreen(recipeViewModel = recipeViewModel)
             }
         }
     }

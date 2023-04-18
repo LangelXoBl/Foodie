@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Foodie</string>
+    <string name="hide">Ocultar</string>
+    <string name="show">Mostrar</string>
+    <string name="add">Añadir</string>
+    <string name="addIngredient">Añadir ingrediente</string>
+    <string name="addCategory">Añadir categoria</string>
 </resources>
