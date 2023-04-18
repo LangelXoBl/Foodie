@@ -4,7 +4,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foodie.data.model.ingredient.IngredientResponse
-import com.example.foodie.data.model.recipe.RecipeResponse
 import com.example.foodie.domain.FinderUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,6 +14,26 @@ class RecipeViewModel @Inject constructor(private val finderUseCase: FinderUseCa
     private var _ingredientList = mutableStateOf(emptyList<IngredientResponse>())
     val ingredientList: List<IngredientResponse> get() = _ingredientList.value
 
+    private var title = mutableStateOf("")
+    val recipeTitle: String get() = title.value
+
+    private var description = mutableStateOf("")
+    val recipeDescription: String get() = description.value
+
+    private var image = mutableStateOf("")
+    val recipeImage: String get() = image.value
+
+    private var instructions = mutableStateOf(emptyList<String>())
+    val recipeInstructions: List<String> get() = instructions.value
+
+    private var preparationTime = mutableStateOf("")
+    val recipePreparationTime: String get() = preparationTime.value
+
+    private var categories = mutableListOf(emptyList<String>())
+    var recipeCategories: List<String> get() = categories[0]
+        set(value) {
+        categories[0] = listOf("1")
+    }
 
     fun addIngredient(name: String) {
         val ingredient = IngredientResponse(name, status = IngredientResponse.Status.LOADING)

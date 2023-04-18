@@ -26,7 +26,7 @@ class AppModule {
     fun provideReftrofit(): Retrofit{
         // https://foodie-api-production.up.railway.app/ <- URL de la API produccion
         return Retrofit.Builder()
-            .baseUrl("https://foodie-api-production.up.railway.app/")
+            .baseUrl("http://10.0.2.2:8000/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

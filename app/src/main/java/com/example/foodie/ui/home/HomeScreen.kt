@@ -103,7 +103,14 @@ fun HomeScreen() {
             composable(route=ItemsNav.RecipeDetail.route+"/{id}", arguments = listOf(navArgument(name = "id"){type=
                 NavType.IntType}) ){ DetailRecipe(detailViewModel = detailViewModel, id = it.arguments?.getInt("id"))}
             composable("recipe") {
-                RecipeScreen(recipeViewModel = recipeViewModel)
+                RecipeScreen(recipeViewModel = recipeViewModel) {
+                    navController.navigate("recipe_form_screen") {
+                        popUpTo(navController.graph.startDestinationId) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
             }
         }
     }

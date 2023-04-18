@@ -2,10 +2,7 @@ package com.example.foodie.ui.components.recipe
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
@@ -20,7 +17,7 @@ import com.example.foodie.ui.recipe.RecipeViewModel
 fun AddIngredientRow (recipeViewModel: RecipeViewModel) {
     val input = remember { mutableStateOf(TextFieldValue()) }
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-        TextField(
+        OutlinedTextField(
             value = input.value,
             onValueChange = { input.value = it },
             label = { Text("Ingrediente") },
