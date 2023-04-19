@@ -1,5 +1,6 @@
 package com.example.foodie.ui.components.recipe
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -32,7 +33,8 @@ import com.example.foodie.ui.home.ListRecipesViewModel
 fun CardRecipe(
     recipe: RecipeResponse,
     navController: NavController,
-    listRecipesViewModel: ListRecipesViewModel
+    listRecipesViewModel: ListRecipesViewModel,
+    page:String
 ) {
     Card(
         modifier = Modifier
@@ -59,7 +61,7 @@ fun CardRecipe(
                 RecipeDescription(recipe.description)
                 RecipePreparationTime(recipe.preparation_time)
 
-                FavoriteIcon(Modifier.align(End), recipe.favorite, listRecipesViewModel, recipe.id)
+                FavoriteIcon(Modifier.align(End), recipe.favorite, listRecipesViewModel, recipe.id, page)
             }
         }
     }
@@ -134,7 +136,8 @@ fun FavoriteIcon(
     align: Modifier,
     favorite: Boolean,
     listRecipesViewModel: ListRecipesViewModel,
-    id: Number
+    id: Number,
+    page: String
 ) {
     Icon(
         imageVector = Icons.Default.Favorite,
@@ -145,7 +148,7 @@ fun FavoriteIcon(
                     listRecipesViewModel.addFavorite(id)
                 }
                 else
-                    listRecipesViewModel.removeFavorite(id)
+                    listRecipesViewModel.removeFavorite(id, page)
             },
         tint = if (favorite) Color.Green else Color.Gray
     )

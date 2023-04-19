@@ -40,7 +40,7 @@ fun FavoritesScreen(listRecipesViewModel: ListRecipesViewModel, navController: N
 
             items(count = listRecipes.size) { index ->
                 val recipe = listRecipes[index]
-                CardRecipe(recipe.recipe, navController, listRecipesViewModel)
+                CardRecipe(recipe.recipe, navController, listRecipesViewModel, "favorites")
             }
             item {
                 Spacer(Modifier.height(50.dp))

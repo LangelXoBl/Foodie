@@ -42,7 +42,7 @@ fun ListRecipes(listRecipesViewModel: ListRecipesViewModel, navController: NavCo
 
             items(count = listRecipes.size) { index ->
                 val recipe = listRecipes[index]
-                CardRecipe(recipe, navController, listRecipesViewModel)
+                CardRecipe(recipe, navController, listRecipesViewModel, "list")
             }
             item {
                 Spacer(Modifier.height(50.dp))}

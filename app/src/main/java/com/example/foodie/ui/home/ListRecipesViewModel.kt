@@ -13,34 +13,35 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ListRecipesViewModel @Inject constructor(private val recipeUserCase: RecipeUserCase): ViewModel(){
-    private val _recipeList= MutableLiveData<List<RecipeResponse>>()
+class ListRecipesViewModel @Inject constructor(private val recipeUserCase: RecipeUserCase) :
+    ViewModel() {
+    private val _recipeList = MutableLiveData<List<RecipeResponse>>()
     val recipeList: LiveData<List<RecipeResponse>> = _recipeList
 
-    private val _favoriteList= MutableLiveData<List<FavoriteList>>()
+    private val _favoriteList = MutableLiveData<List<FavoriteList>>()
     val favoriteList: LiveData<List<FavoriteList>> = _favoriteList
 
-    fun getFavorites (){
+    fun getFavorites() {
         viewModelScope.launch {
             try {
                 _favoriteList.value = recipeUserCase.favoritesList()
-            }catch (e: Exception){
-                Log.i("error","${e.message}")
+            } catch (e: Exception) {
+                Log.i("error", "${e.message}")
             }
         }
     }
 
-    fun getRecipes (){
+    fun getRecipes() {
         viewModelScope.launch {
             try {
                 _recipeList.value = recipeUserCase.invoke()
-            }catch (e: Exception){
-                Log.i("error","${e.message}")
+            } catch (e: Exception) {
+                Log.i("error", "${e.message}")
             }
         }
     }
 
-    fun addFavorite(id:Number){
+    fun addFavorite(id: Number) {
         viewModelScope.launch {
             try {
                 recipeUserCase.addFavorite(id)
@@ -52,25 +53,33 @@ class ListRecipesViewModel @Inject constructor(private val recipeUserCase: Recip
                     }
                 }
                 _recipeList.value = updatedList
-            }catch (e: Exception){
-                Log.i("error","${e.message}")
+            } catch (e: Exception) {
+                Log.i("error", "${e.message}")
             }
         }
     }
-    fun removeFavorite(id:Number){
+
+    fun removeFavorite(id: Number, page: String) {
         viewModelScope.launch {
             try {
                 recipeUserCase.removeFavorite(id)
-                val updatedList = _recipeList.value?.map { recipe ->
-                    if (recipe.id == id) {
-                        recipe.copy(favorite = false) // Actualizar la propiedad "favorite"
-                    } else {
-                        recipe
+                if (page == "favorites") {
+                    val updatedList = _favoriteList.value?.filter { favorite ->
+                        favorite.recipe.id != id
                     }
+                    _favoriteList.value = updatedList
+                } else {
+                    val updatedList = _recipeList.value?.map { recipe ->
+                        if (recipe.id == id) {
+                            recipe.copy(favorite = false)
+                        } else {
+                            recipe
+                        }
+                    }
+                    _recipeList.value = updatedList
                 }
-                _recipeList.value = updatedList
-            }catch (e: Exception){
-                Log.i("error","${e.message}")
+            } catch (e: Exception) {
+                Log.i("error", "${e.message}")
             }
         }
     }
