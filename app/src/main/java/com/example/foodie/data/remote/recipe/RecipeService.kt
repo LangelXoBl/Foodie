@@ -80,6 +80,7 @@ class RecipeService @Inject constructor(@ApplicationContext private val context:
         instructions: List<String>,
         categories: List<CategoriesResponse>
     ) {
+        val token = preferences["token",""]
         return withContext(Dispatchers.IO) {
             val response = recipeDataSource.createRecipe(
                 RecipeRequest(
@@ -90,7 +91,7 @@ class RecipeService @Inject constructor(@ApplicationContext private val context:
                     ingredients = ingredients,
                     instructions = instructions,
                     categories = categories.map(CategoriesResponse::id)
-                )
+                ), token
             )
             if (response.isSuccessful) {
                 Log.i("Recipes", "Recipe created")

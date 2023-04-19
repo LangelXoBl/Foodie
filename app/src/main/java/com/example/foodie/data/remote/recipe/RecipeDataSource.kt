@@ -21,7 +21,7 @@ interface RecipeDataSource {
     suspend fun recipes(@Header("Authorization") token: String):Response<List<RecipeResponse>>
 
     @POST("recipe/")
-    suspend fun createRecipe(@Body recipe: RecipeRequest): Response<RecipeResponse>
+    suspend fun createRecipe(@Body recipe: RecipeRequest, @Header("Authorization") token: String): Response<RecipeResponse>
     
     @GET("recipe/{id}")
     suspend fun recipeDetail(@Path("id") id: Number): Response<RecipeResponse>
