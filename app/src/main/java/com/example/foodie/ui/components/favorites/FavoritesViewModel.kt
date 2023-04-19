@@ -1,4 +1,4 @@
-package com.example.foodie.ui.home
+package com.example.foodie.ui.components.favorites
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -6,17 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.foodie.data.model.favorite.FavoriteList
-import com.example.foodie.data.model.recipe.RecipeResponse
 import com.example.foodie.domain.recipe.RecipeUserCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ListRecipesViewModel @Inject constructor(private val recipeUserCase: RecipeUserCase): ViewModel(){
-    private val _recipeList= MutableLiveData<List<RecipeResponse>>()
-    val recipeList: LiveData<List<RecipeResponse>> = _recipeList
-
+class FavoritesViewModel @Inject constructor(private val recipeUserCase: RecipeUserCase): ViewModel() {
     private val _favoriteList= MutableLiveData<List<FavoriteList>>()
     val favoriteList: LiveData<List<FavoriteList>> = _favoriteList
 
@@ -30,28 +26,19 @@ class ListRecipesViewModel @Inject constructor(private val recipeUserCase: Recip
         }
     }
 
-    fun getRecipes (){
-        viewModelScope.launch {
-            try {
-                _recipeList.value = recipeUserCase.invoke()
-            }catch (e: Exception){
-                Log.i("error","${e.message}")
-            }
-        }
-    }
-
     fun addFavorite(id:Number){
         viewModelScope.launch {
             try {
                 recipeUserCase.addFavorite(id)
-                val updatedList = _recipeList.value?.map { recipe ->
-                    if (recipe.id == id) {
-                        recipe.copy(favorite = true) // Actualizar la propiedad "favorite"
+                val updatedList = _favoriteList.value?.map { favorite ->
+                    if (favorite.id == id) {
+                        val updatedRecipe = favorite.recipe.copy(favorite = true)
+                        favorite.copy(recipe = updatedRecipe) // Actualizar la propiedad "favorite"
                     } else {
-                        recipe
+                        favorite
                     }
                 }
-                _recipeList.value = updatedList
+                _favoriteList.value = updatedList
             }catch (e: Exception){
                 Log.i("error","${e.message}")
             }
@@ -61,14 +48,15 @@ class ListRecipesViewModel @Inject constructor(private val recipeUserCase: Recip
         viewModelScope.launch {
             try {
                 recipeUserCase.removeFavorite(id)
-                val updatedList = _recipeList.value?.map { recipe ->
-                    if (recipe.id == id) {
-                        recipe.copy(favorite = false) // Actualizar la propiedad "favorite"
+                val updatedList = _favoriteList.value?.map { favorite ->
+                    if (favorite.id == id) {
+                        val updatedRecipe = favorite.recipe.copy(favorite = true)
+                        favorite.copy(recipe = updatedRecipe)// Actualizar la propiedad "favorite"
                     } else {
-                        recipe
+                        favorite
                     }
                 }
-                _recipeList.value = updatedList
+                _favoriteList.value = updatedList
             }catch (e: Exception){
                 Log.i("error","${e.message}")
             }

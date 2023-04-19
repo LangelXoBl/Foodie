@@ -1,6 +1,8 @@
 package com.example.foodie.data.repository
 
 import com.example.foodie.data.model.categories.CategoriesResponse
+import com.example.foodie.data.model.favorite.FavoriteList
+import com.example.foodie.data.model.favorite.FavoriteResponse
 import com.example.foodie.data.model.ingredient.IngredientResponse
 import com.example.foodie.data.model.recipe.RecipeResponse
 import com.example.foodie.data.remote.recipe.RecipeDataSource
@@ -37,5 +39,18 @@ class RecipeRepository @Inject constructor(private val api: RecipeService) {
     ) {
         return api.createRecipe(title, description, image,preparation_time, ingredients, instructions, categories)
     }
+
+    suspend fun addFavorite(id: Number): FavoriteResponse? {
+        return api.addFavorite(id)
+    }
+
+    suspend fun removeFavorite(id: Number): FavoriteResponse? {
+        return api.removeFavorite(id)
+    }
+
+    suspend fun favoriteList(): List<FavoriteList>? {
+        return api.favoriteList()
+    }
+
 }
 

@@ -1,4 +1,4 @@
-package com.example.foodie.ui.home
+package com.example.foodie.ui.components.favorites
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -16,36 +16,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.foodie.data.model.recipe.RecipeResponse
+import com.example.foodie.data.model.favorite.FavoriteList
 import com.example.foodie.ui.components.recipe.CardRecipe
+import com.example.foodie.ui.home.ListRecipesViewModel
 
-//@Preview
 @Composable
-fun ListRecipes(listRecipesViewModel: ListRecipesViewModel, navController: NavController){
+fun FavoritesScreen(listRecipesViewModel: ListRecipesViewModel, navController: NavController) {
 
-    //val listRecipesViewModel: ListRecipesViewModel = viewModel()
-    
-    val listRecipes: List<RecipeResponse> by listRecipesViewModel.recipeList.observeAsState(initial = emptyList())
-    
-    LaunchedEffect(true ){
-        listRecipesViewModel.getRecipes()
+    val listRecipes: List<FavoriteList> by listRecipesViewModel.favoriteList.observeAsState(initial = emptyList())
+
+    LaunchedEffect(true){
+        listRecipesViewModel.getFavorites()
     }
+
     if(listRecipes.isEmpty()) {
         Box(Modifier.fillMaxSize()) {
             CircularProgressIndicator(Modifier.align(Alignment.Center))
         }
-    }
-    else {
+    }else {
         LazyColumn(modifier = Modifier
             .background(color = Color(0xFF141414))
             .fillMaxSize()) {
 
             items(count = listRecipes.size) { index ->
                 val recipe = listRecipes[index]
-                CardRecipe(recipe, navController, listRecipesViewModel)
+                CardRecipe(recipe.recipe, navController, listRecipesViewModel)
             }
             item {
-                Spacer(Modifier.height(50.dp))}
+                Spacer(Modifier.height(50.dp))
+            }
         }
     }
 }

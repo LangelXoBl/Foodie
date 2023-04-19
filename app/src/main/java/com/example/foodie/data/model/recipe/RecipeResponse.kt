@@ -28,8 +28,10 @@ data class RecipeResponse(
     var image: String = "",
     @SerializedName("preparation_time")
     @Expose
-    var preparation_time: String = ""
-
+    var preparation_time: String = "",
+    @SerializedName("favorite")
+    @Expose
+    var favorite: Boolean= false
 
 ) {
     enum class Status {

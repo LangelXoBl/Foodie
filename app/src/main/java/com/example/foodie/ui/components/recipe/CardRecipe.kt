@@ -9,10 +9,12 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Sell
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -23,15 +25,20 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.foodie.data.model.recipe.RecipeResponse
 import com.example.foodie.navigation.ItemsNav
+import com.example.foodie.ui.home.ListRecipesViewModel
 
 //@Preview()
 @Composable
-fun CardRecipe(recipe: RecipeResponse, navController: NavController) {
+fun CardRecipe(
+    recipe: RecipeResponse,
+    navController: NavController,
+    listRecipesViewModel: ListRecipesViewModel
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
-            .clickable { navController.navigate(ItemsNav.RecipeDetail.route+"/${recipe.id}") },
+            .clickable { navController.navigate(ItemsNav.RecipeDetail.route + "/${recipe.id}") },
         elevation = 10.dp
     ) {
         Row(Modifier.fillMaxWidth()) {
@@ -51,6 +58,8 @@ fun CardRecipe(recipe: RecipeResponse, navController: NavController) {
                 RecipeCategories(recipe.categories)
                 RecipeDescription(recipe.description)
                 RecipePreparationTime(recipe.preparation_time)
+
+                FavoriteIcon(Modifier.align(End), recipe.favorite, listRecipesViewModel, recipe.id)
             }
         }
     }
@@ -77,7 +86,7 @@ fun RecipeTitle(title: String) {
 
 @Composable
 fun RecipeCategories(categories: List<String>) {
-    Row(verticalAlignment = Alignment.CenterVertically,) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
         Icon(
             imageVector = Icons.Default.Sell,
             contentDescription = null,
@@ -118,4 +127,26 @@ fun RecipePreparationTime(time: String) {
             modifier = Modifier.fillMaxWidth(),
         )
     }
+}
+
+@Composable
+fun FavoriteIcon(
+    align: Modifier,
+    favorite: Boolean,
+    listRecipesViewModel: ListRecipesViewModel,
+    id: Number
+) {
+    Icon(
+        imageVector = Icons.Default.Favorite,
+        contentDescription = null,
+        modifier = align
+            .clickable {
+                if (!favorite) {
+                    listRecipesViewModel.addFavorite(id)
+                }
+                else
+                    listRecipesViewModel.removeFavorite(id)
+            },
+        tint = if (favorite) Color.Green else Color.Gray
+    )
 }

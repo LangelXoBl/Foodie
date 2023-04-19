@@ -22,6 +22,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.foodie.navigation.ItemsNav
+import com.example.foodie.ui.components.favorites.FavoritesScreen
 import com.example.foodie.ui.detail.DetailRecipe
 import com.example.foodie.ui.detail.DetailViewModel
 import com.example.foodie.ui.recipe.RecipeScreen
@@ -48,16 +49,18 @@ fun HomeScreen() {
     }
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = navController.currentBackStackEntryAsState().value?.destination?.route
-                            ?: "",
-                        color = Color(0xFFffffff),
-                    )
-                },
-                backgroundColor = Color(0xFF40454F)
-            )
+            if (navController.currentBackStackEntryAsState().value?.destination?.route != "detail/{id}") {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = navController.currentBackStackEntryAsState().value?.destination?.route
+                                ?: "",
+                            color = Color(0xFFffffff),
+                        )
+                    },
+                    backgroundColor = Color(0xFF40454F)
+                )
+            }
         },
         bottomBar = {
             BottomNavigation (backgroundColor = Color(0xFF40454F)){
@@ -103,7 +106,10 @@ fun HomeScreen() {
         NavHost(navController = navController, startDestination = ItemsNav.HomeRoute.route) {
             composable(ItemsNav.HomeRoute.route) { ListRecipes(listRecipesViewModel, navController) }
             composable(ItemsNav.SettingsRoute.route) { Text(text = "settings") }
-            composable(ItemsNav.FavoriteRoute.route) { Text(text = "fav") }
+            composable(ItemsNav.FavoriteRoute.route) { FavoritesScreen(
+                listRecipesViewModel = listRecipesViewModel,
+                navController = navController
+            ) }
             composable(route=ItemsNav.RecipeDetail.route+"/{id}", arguments = listOf(navArgument(name = "id"){type=
                 NavType.IntType}) ){ DetailRecipe(detailViewModel = detailViewModel, id = it.arguments?.getInt("id"))}
             composable("recipe") {
