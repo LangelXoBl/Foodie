@@ -52,26 +52,28 @@ fun HomeScreen() {
                 title = {
                     Text(
                         text = navController.currentBackStackEntryAsState().value?.destination?.route
-                            ?: ""
+                            ?: "",
+                        color = Color(0xFFffffff),
                     )
-                }
+                },
+                backgroundColor = Color(0xFF40454F)
             )
         },
         bottomBar = {
-            BottomNavigation {
+            BottomNavigation (backgroundColor = Color(0xFF40454F)){
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
                 BottomNavigationItem(
-                    icon = { Icon(ItemsNav.HomeRoute.icon, contentDescription = null) },
-                    label = { Text(text = ItemsNav.HomeRoute.title) },
+                    icon = { Icon(ItemsNav.HomeRoute.icon, contentDescription = null, tint = Color(0xFFffffff)) },
+                    label = { Text(text = ItemsNav.HomeRoute.title, color = Color(0xFFffffff)) },
                     selected = currentRoute == ItemsNav.HomeRoute.route,
                     onClick = {
                         navController.popBackStack(navController.graph.startDestinationId, false)
                     }
                 )
                 BottomNavigationItem(
-                    icon = { Icon(ItemsNav.FavoriteRoute.icon, contentDescription = null) },
-                    label = { Text(ItemsNav.FavoriteRoute.title) },
+                    icon = { Icon(ItemsNav.FavoriteRoute.icon, contentDescription = null, tint = Color(0xFFffffff)) },
+                    label = { Text(ItemsNav.FavoriteRoute.title, color = Color(0xFFffffff)) },
                     selected = currentRoute == ItemsNav.FavoriteRoute.route,
                     onClick = {
                         navController.navigate(ItemsNav.FavoriteRoute.route) {
@@ -83,8 +85,8 @@ fun HomeScreen() {
                     }
                 )
                 BottomNavigationItem(
-                    icon = { Icon(ItemsNav.SettingsRoute.icon, contentDescription = null) },
-                    label = { Text(ItemsNav.SettingsRoute.title) },
+                    icon = { Icon(ItemsNav.SettingsRoute.icon, contentDescription = null, tint = Color(0xFFffffff)) },
+                    label = { Text(ItemsNav.SettingsRoute.title, color = Color(0xFFffffff)) },
                     selected = currentRoute == ItemsNav.SettingsRoute.route,
                     onClick = {
                         navController.navigate(ItemsNav.SettingsRoute.route) {

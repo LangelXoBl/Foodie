@@ -2,6 +2,7 @@ package com.example.foodie.ui.login
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -38,6 +39,7 @@ fun LoginScreen(viewModel: LoginViewModel) {
     Scaffold(scaffoldState = scaffoldState) {
         Box(
             Modifier
+                .background(color = Color(0xFF141414))
                 .fillMaxSize()
                 .padding(16.dp)
         ) {

@@ -3,6 +3,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -17,7 +18,11 @@ fun AddItemButton(itemName: String, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         modifier = Modifier
-            .padding(16.dp)
+            .padding(16.dp),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color(0xFF40454F),
+            contentColor = Color.White,
+        )
     ) {
         Row {
             Icon(

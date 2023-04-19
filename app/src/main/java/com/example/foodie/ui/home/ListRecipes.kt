@@ -36,7 +36,9 @@ fun ListRecipes(listRecipesViewModel: ListRecipesViewModel, navController: NavCo
         }
     }
     else {
-        LazyColumn() {
+        LazyColumn(modifier = Modifier
+            .background(color = Color(0xFF141414))
+            .fillMaxSize()) {
 
             items(count = listRecipes.size) { index ->
                 val recipe = listRecipes[index]
